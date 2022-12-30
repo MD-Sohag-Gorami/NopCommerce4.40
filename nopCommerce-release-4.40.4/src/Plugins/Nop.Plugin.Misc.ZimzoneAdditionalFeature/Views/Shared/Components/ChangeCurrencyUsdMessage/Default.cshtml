@@ -1,0 +1,7 @@
+﻿@model ChangeCurrencyUsdMessageModel
+<div class="electrosales-currency-not-supported">
+    <div class="change-currency-to-usd-message">
+        @T("Plugins.Misc.ZimzoneAdditionalFeature.Products.GiftCard.Electrosales.ChangeCurrencyToUsdMessage")
+    </div>
+    @await Component.InvokeAsync("Widget", new { widgetZone = GiftVoucherDefaults.CUSTOM_WIDGET_GIFT_VOUCHER_CHANGE_TO_USD_BUTTON, additionalData = Model})
+</div>

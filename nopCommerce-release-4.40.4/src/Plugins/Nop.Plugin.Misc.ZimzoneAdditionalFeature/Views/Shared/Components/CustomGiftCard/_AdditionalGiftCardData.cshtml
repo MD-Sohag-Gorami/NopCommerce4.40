@@ -1,0 +1,126 @@
+﻿@model GiftCardAdditionalDataModel
+@inject GiftVoucherSettings giftVoucherSettings
+@inject IWorkContext workContext
+@inject ICustomerService customerService
+@{
+    var isGuest = await customerService.IsGuestAsync(await workContext.GetCurrentCustomerAsync());
+    var isZimazonGiftCard = giftVoucherSettings.ZimazonGiftProductSku.Equals(Model.ProductSku);
+    var isElectrosalesCreditVoucher = giftVoucherSettings.ElectrosalesGiftProductSku.Equals(Model.ProductSku);
+}
+@if (Model.IsGiftCard)
+{
+    @if (Model.GiftCardType == Nop.Core.Domain.Catalog.GiftCardType.Virtual)
+    {
+        <input asp-for="GiftCardDeliveryDate" value="@Model.GiftCardDeliveryDate.Value.ToString("dd/MM/yyyy")" type="hidden"/>
+        <div class="giftcard">
+            <div>
+                <label asp-for="FirstName" asp-postfix=":"></label>
+                <input asp-for="FirstName" class="recipient-name" />
+                <nop-required />
+            </div>
+            <div>
+                <label asp-for="LastName" asp-postfix=":"></label>
+                <input asp-for="LastName" class="recipient-name" />
+                <nop-required />
+            </div>
+
+            @if (Model.GiftCardType == Nop.Core.Domain.Catalog.GiftCardType.Virtual)
+            {
+                <div>
+                    <label asp-for="RecipientEmail" asp-postfix=":"></label>
+                    <input asp-for="RecipientEmail" class="recipient-email" />
+                    @if (isZimazonGiftCard && giftVoucherSettings.RequireRecipientEmailZimazon)
+                    {
+                        <nop-required />
+                    }
+                    else if (isElectrosalesCreditVoucher && giftVoucherSettings.RequireRecipientEmailElectrosales)
+                    {
+                        <nop-required />
+                    }
+                </div>
+            }
+            @if (isZimazonGiftCard && giftVoucherSettings.EnablePhysicalAddressZimazon)
+            {
+                <div>
+                    <label asp-for="PhysicalAddress " asp-postfix=":"></label>
+                    <input asp-for="PhysicalAddress" class="recipient-name" />
+                    @if (giftVoucherSettings.RequirePhysicalAddressZimazon)
+                    {
+                        <nop-required />
+                    }
+                </div>
+            }
+            @if (isElectrosalesCreditVoucher && giftVoucherSettings.EnablePhysicalAddressElectrosales)
+            {
+                <div>
+                    <label asp-for="PhysicalAddress " asp-postfix=":"></label>
+                    <input asp-for="PhysicalAddress" class="recipient-name" />
+                    @if (giftVoucherSettings.RequirePhysicalAddressElectrosales)
+                    {
+                        <nop-required />
+                    }
+                </div>
+            }
+
+            @if (isZimazonGiftCard && giftVoucherSettings.EnableCellPhoneNumberZimazon)
+            {
+                <div>
+                    <label asp-for="CellPhoneNumber " asp-postfix=":"></label>
+                    <input asp-for="CellPhoneNumber" class="recipient-name" />
+                    @if (isZimazonGiftCard && giftVoucherSettings.RequireCellPhoneNumberZimazon)
+                    {
+                        <nop-required />
+                    }
+                </div>
+            }
+            @if (isElectrosalesCreditVoucher && giftVoucherSettings.EnableCellPhoneNumberElectrosales)
+            {
+                <div>
+                    <label asp-for="CellPhoneNumber " asp-postfix=":"></label>
+                    <input asp-for="CellPhoneNumber" class="recipient-name" />
+                    @if (giftVoucherSettings.RequireCellPhoneNumberElectrosales)
+                    {
+                        <nop-required />
+                    }
+                </div>
+            }
+            @if (isZimazonGiftCard && giftVoucherSettings.EnableIdOrPassportNumberZimazon)
+            {
+                <div>
+                    <label asp-for="IdOrPassportNumber " asp-postfix=":"></label>
+                    <input asp-for="IdOrPassportNumber" class="recipient-name" />
+                    @if (giftVoucherSettings.RequireIdOrPassportNumberZimazon)
+                    {
+                        <nop-required />
+                    }
+                </div>
+            }
+            @if (isElectrosalesCreditVoucher && giftVoucherSettings.EnableIdOrPassportNumberElectrosales)
+            {
+                <div>
+                    <label asp-for="IdOrPassportNumber " asp-postfix=":"></label>
+                    <input asp-for="IdOrPassportNumber" class="recipient-name" />
+                    @if (giftVoucherSettings.RequireIdOrPassportNumberElectrosales)
+                    {
+                        <nop-required />
+                    }
+                </div>
+            }
+            <div>
+                <label asp-for="SenderName" asp-postfix=":"></label>
+                <input asp-for="SenderName" class="sender-name" readonly="@(!isGuest)" />
+                <nop-required />
+            </div>
+            <div>
+                <label asp-for="SenderEmail" asp-postfix=":"></label>
+                <input asp-for="SenderEmail" class="sender-email" readonly="@(!isGuest)" />
+                <nop-required />
+            </div>
+
+            <div>
+                <label asp-for="Message" asp-postfix=":"></label>
+                <textarea asp-for="Message" class="message"></textarea>
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,298 @@
+﻿@model VoucherConfigurationModel
+
+@{
+    Layout = "_ConfigurePlugin";
+    Html.SetActiveMenuItemSystemName("AdditionalFeature.GiftVoucher.Configure");
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<script>
+    $(document).ready(function() {
+        $("#@Html.IdFor(model => model.EnableCellPhoneNumberZimazon)").click(toggleCellPhoneNumberZimazon);
+        toggleCellPhoneNumberZimazon();
+        $("#@Html.IdFor(model => model.EnableCellPhoneNumberElectrosales)").click(toggleCellPhoneNumberElectrosales);
+        toggleCellPhoneNumberElectrosales();
+
+        $("#@Html.IdFor(model => model.EnableIdOrPassportNumberZimazon)").click(toggleIdOrPassportNumberZimazon);
+        toggleIdOrPassportNumberZimazon();
+        $("#@Html.IdFor(model => model.EnableIdOrPassportNumberElectrosales)").click(toggleIdOrPassportNumberElectrosales);
+        toggleIdOrPassportNumberElectrosales();
+
+        $("#@Html.IdFor(model => model.EnablePhysicalAddressZimazon)").click(togglePhysicalAddressZimazon);
+        togglePhysicalAddressZimazon();
+        $("#@Html.IdFor(model => model.EnablePhysicalAddressElectrosales)").click(togglePhysicalAddressElectrosales);
+        togglePhysicalAddressElectrosales();
+    });
+
+
+    function toggleCellPhoneNumberZimazon() {
+        if ($('#@Html.IdFor(model => model.EnableCellPhoneNumberZimazon)').is(':checked')) {
+            $('#pnlRequireCellPhoneNumberZimazon').showElement();
+        } else {
+            $('#pnlRequireCellPhoneNumberZimazon').hideElement();
+        }
+    }
+    function toggleCellPhoneNumberElectrosales() {
+        if ($('#@Html.IdFor(model => model.EnableCellPhoneNumberElectrosales)').is(':checked')) {
+            $('#pnlRequireCellPhoneNumberElectrosales').showElement();
+        } else {
+            $('#pnlRequireCellPhoneNumberElectrosales').hideElement();
+        }
+    }
+
+    function togglePhysicalAddressZimazon() {
+        if ($('#@Html.IdFor(model => model.EnablePhysicalAddressZimazon)').is(':checked')) {
+            $('#pnlRequirePhysicalAddressZimazon').showElement();
+        } else {
+            $('#pnlRequirePhysicalAddressZimazon').hideElement();
+        }
+    }
+    function togglePhysicalAddressElectrosales() {
+        if ($('#@Html.IdFor(model => model.EnablePhysicalAddressElectrosales)').is(':checked')) {
+            $('#pnlRequirePhysicalAddressElectrosales').showElement();
+        } else {
+            $('#pnlRequirePhysicalAddressElectrosales').hideElement();
+        }
+    }
+
+    function toggleIdOrPassportNumberZimazon() {
+        if ($('#@Html.IdFor(model => model.EnableIdOrPassportNumberZimazon)').is(':checked')) {
+            $('#pnlRequireIdOrPassportNumberZimazon').showElement();
+        } else {
+            $('#pnlRequireIdOrPassportNumberZimazon').hideElement();
+        }
+    }
+    function toggleIdOrPassportNumberElectrosales() {
+        if ($('#@Html.IdFor(model => model.EnableIdOrPassportNumberElectrosales)').is(':checked')) {
+            $('#pnlRequireIdOrPassportNumberElectrosales').showElement();
+        } else {
+            $('#pnlRequireIdOrPassportNumberElectrosales').hideElement();
+        }
+    }
+</script>
+<form asp-controller="GiftVoucher" asp-action="Configure" method="post">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnableGiftCardAndVoucherLinkOnMegaMenu_OverrideForStore" asp-input="EnableGiftCardAndVoucherLinkOnMegaMenu" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnableGiftCardAndVoucherLinkOnMegaMenu" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableGiftCardAndVoucherLinkOnMegaMenu" />
+                        <span asp-validation-for="EnableGiftCardAndVoucherLinkOnMegaMenu"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ZimazonGiftProductSku_OverrideForStore" asp-input="ZimazonGiftProductSku" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ZimazonGiftProductSku" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ZimazonGiftProductSku" />
+                        <span asp-validation-for="ZimazonGiftProductSku"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ElectrosalesGiftProductSku_OverrideForStore" asp-input="ElectrosalesGiftProductSku" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ElectrosalesGiftProductSku" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ElectrosalesGiftProductSku" />
+                        <span asp-validation-for="ElectrosalesGiftProductSku"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ZimazonGiftCardAvaiableAmounts_OverrideForStore" asp-input="ZimazonGiftCardAvaiableAmounts" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ZimazonGiftCardAvaiableAmounts" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ZimazonGiftCardAvaiableAmounts" />
+                        <span asp-validation-for="ZimazonGiftCardAvaiableAmounts"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ElectrosalesGiftVoucherAvaiableAmounts_OverrideForStore" asp-input="ElectrosalesGiftVoucherAvaiableAmounts" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ElectrosalesGiftVoucherAvaiableAmounts" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ElectrosalesGiftVoucherAvaiableAmounts" />
+                        <span asp-validation-for="ElectrosalesGiftVoucherAvaiableAmounts"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="RequireRecipientEmailZimazon_OverrideForStore" asp-input="RequireRecipientEmailZimazon" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="RequireRecipientEmailZimazon" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="RequireRecipientEmailZimazon" />
+                        <span asp-validation-for="RequireRecipientEmailZimazon"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="RequireRecipientEmailElectrosales_OverrideForStore" asp-input="RequireRecipientEmailElectrosales" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="RequireRecipientEmailElectrosales" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="RequireRecipientEmailElectrosales" />
+                        <span asp-validation-for="RequireRecipientEmailElectrosales"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnableCellPhoneNumberZimazon_OverrideForStore" asp-input="EnableCellPhoneNumberZimazon" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnableCellPhoneNumberZimazon" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableCellPhoneNumberZimazon" />
+                        <span asp-validation-for="EnableCellPhoneNumberZimazon"></span>
+                    </div>
+                </div>
+                <nop-nested-setting asp-for="EnableCellPhoneNumberZimazon">
+                    <div class="form-group row" id="pnlRequireCellPhoneNumberZimazon">
+                        <div class="col-md-3">
+                            <nop-label asp-for="RequireCellPhoneNumberZimazon" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="RequireCellPhoneNumberZimazon" />
+                            <span asp-validation-for="RequireCellPhoneNumberZimazon"></span>
+                        </div>
+                    </div>
+                </nop-nested-setting>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnableCellPhoneNumberElectrosales_OverrideForStore" asp-input="EnableCellPhoneNumberElectrosales" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnableCellPhoneNumberElectrosales" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableCellPhoneNumberElectrosales" />
+                        <span asp-validation-for="EnableCellPhoneNumberElectrosales"></span>
+                    </div>
+                </div>
+
+                <nop-nested-setting asp-for="EnableCellPhoneNumberElectrosales">
+                    <div class="form-group row" id="pnlRequireCellPhoneNumberElectrosales">
+                        <div class="col-md-3">
+                            <nop-label asp-for="RequireCellPhoneNumberElectrosales" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="RequireCellPhoneNumberElectrosales" />
+                            <span asp-validation-for="RequireCellPhoneNumberElectrosales"></span>
+                        </div>
+                    </div>
+                </nop-nested-setting>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnableIdOrPassportNumberZimazon_OverrideForStore" asp-input="EnableIdOrPassportNumberZimazon" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnableIdOrPassportNumberZimazon" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableIdOrPassportNumberZimazon" />
+                        <span asp-validation-for="EnableIdOrPassportNumberZimazon"></span>
+                    </div>
+                </div>
+                <nop-nested-setting asp-for="EnableIdOrPassportNumberZimazon">
+                    <div class="form-group row" id="pnlRequireIdOrPassportNumberZimazon">
+                        <div class="col-md-3">
+                            <nop-label asp-for="RequireIdOrPassportNumberZimazon" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="RequireIdOrPassportNumberZimazon" />
+                            <span asp-validation-for="RequireIdOrPassportNumberZimazon"></span>
+                        </div>
+                    </div>
+                </nop-nested-setting>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnableIdOrPassportNumberElectrosales_OverrideForStore" asp-input="EnableIdOrPassportNumberElectrosales" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnableIdOrPassportNumberElectrosales" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableIdOrPassportNumberElectrosales" />
+                        <span asp-validation-for="EnableIdOrPassportNumberElectrosales"></span>
+                    </div>
+                </div>
+                <nop-nested-setting asp-for="EnableIdOrPassportNumberElectrosales">
+                    <div class="form-group row" id="pnlRequireIdOrPassportNumberElectrosales">
+                        <div class="col-md-3">
+                            <nop-label asp-for="RequireIdOrPassportNumberElectrosales" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="RequireIdOrPassportNumberElectrosales" />
+                            <span asp-validation-for="RequireIdOrPassportNumberElectrosales"></span>
+                        </div>
+                    </div>
+                </nop-nested-setting>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnablePhysicalAddressZimazon_OverrideForStore" asp-input="EnablePhysicalAddressZimazon" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnablePhysicalAddressZimazon" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnablePhysicalAddressZimazon" />
+                        <span asp-validation-for="EnablePhysicalAddressZimazon"></span>
+                    </div>
+                </div>
+                <nop-nested-setting asp-for="EnablePhysicalAddressZimazon">
+                    <div class="form-group row" id="pnlRequirePhysicalAddressZimazon">
+                        <div class="col-md-3">
+                            <nop-label asp-for="RequirePhysicalAddressZimazon" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="RequirePhysicalAddressZimazon" />
+                            <span asp-validation-for="RequirePhysicalAddressZimazon"></span>
+                        </div>
+                    </div>
+                </nop-nested-setting>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnablePhysicalAddressElectrosales_OverrideForStore" asp-input="EnablePhysicalAddressElectrosales" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnablePhysicalAddressElectrosales" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnablePhysicalAddressElectrosales" />
+                        <span asp-validation-for="EnablePhysicalAddressElectrosales"></span>
+                    </div>
+                </div>
+                <nop-nested-setting asp-for="EnablePhysicalAddressElectrosales">
+                    <div class="form-group row" id="pnlRequirePhysicalAddressElectrosales">
+                        <div class="col-md-3">
+                            <nop-label asp-for="RequirePhysicalAddressElectrosales" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="RequirePhysicalAddressElectrosales" />
+                            <span asp-validation-for="RequirePhysicalAddressElectrosales"></span>
+                        </div>
+                    </div>
+                </nop-nested-setting>
+
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

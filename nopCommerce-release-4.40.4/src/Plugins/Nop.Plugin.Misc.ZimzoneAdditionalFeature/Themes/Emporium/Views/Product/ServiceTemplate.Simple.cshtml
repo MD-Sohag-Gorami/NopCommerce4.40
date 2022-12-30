@@ -1,0 +1,231 @@
+﻿@model ProductDetailsModel
+@using Nop.Core
+@using Nop.Core.Domain.Seo;
+@using Nop.Core.Domain.Catalog
+@using Nop.Core.Domain.Customers;
+
+@inject Nop.Core.IWebHelper webHelper
+@inject CatalogSettings catalogSettings
+@inject SeoSettings seoSettings
+@inject ISettingService settingService
+@inject IStoreContext  storeContext
+@inject GiftVoucherSettings  giftVoucherSettings
+@inject IWorkContext workContext
+@inject ICustomerService customerService
+
+@{
+    Layout = "_ColumnsOne";
+
+    //title
+    Html.AddTitleParts(!string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    //meta
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+    //page class
+    Html.AppendPageCssClassParts("html-product-details-page");
+
+    //canonical URL
+    if (seoSettings.CanonicalUrlsEnabled)
+    {
+        var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, webHelper.GetCurrentRequestProtocol()).ToLowerInvariant();
+        Html.AddCanonicalUrlParts(productUrl, seoSettings.QueryStringInCanonicalUrlsEnabled);
+    }
+
+    //open graph META tags
+    if (seoSettings.OpenGraphMetaTags)
+    {
+        Html.AddHeadCustomParts("<meta property=\"og:type\" content=\"product\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:description\" content=\"" + Html.Encode(Nop.Core.Html.HtmlHelper.StripTags(Model.MetaDescription)) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:image:url\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:url\" content=\"" + webHelper.GetThisPageUrl(false) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:site_name\" content=\"" + Html.Encode(Model.CurrentStoreName) + "\" />");
+    }
+
+    //Twitter META tags
+    if (seoSettings.TwitterMetaTags)
+    {
+        Html.AddHeadCustomParts("<meta property=\"twitter:card\" content=\"summary\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:site\" content=\"" + Html.Encode(Model.CurrentStoreName) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:description\" content=\"" + Html.Encode(Nop.Core.Html.HtmlHelper.StripTags(Model.MetaDescription)) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:url\" content=\"" + webHelper.GetThisPageUrl(false) + "\" />");
+    }
+
+    var showShareButton = catalogSettings.ShowShareButton;
+}
+
+@await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsAfterBreadcrumb, additionalData = Model })
+<div class="page product-details-page">
+    <div class="page-body">
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsTop, additionalData = Model })
+        <form asp-controller="ZimzoneService" asp-action="ServiceRequest" asp-route-productId="@Model.Id" asp-route-sename="@Model.SeName" method="post" id="product-details-form">
+            @if (seoSettings.MicrodataEnabled)
+            {
+                @await Html.PartialAsync("_Microdata", Model)
+            }
+            <div data-productid="@Model.Id">
+                <div class="product-essential">
+                    <div class="mobile-name-holder"></div>
+                    <div class="mobile-prev-next-holder"></div>
+                    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsEssentialTop, additionalData = Model })
+                    @{
+                        var cloudZoom = await Component.InvokeAsync("Widget", new { widgetZone = "sevenspikes_cloud_zoom", additionalData = Model });
+                    }
+                    @if (!String.IsNullOrEmpty(await cloudZoom.RenderHtmlContentAsync()) && !Model.GiftCard.IsGiftCard)
+                    {
+                        @cloudZoom
+                    }
+                    else
+                    {
+                        <!--product pictures-->
+                        @await Html.PartialAsync("_ProductDetailsPictures", Model)
+                    }
+                    <div class="overview">
+                        <div class="prev-next-holder">
+                            @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsOverviewTop, additionalData = Model })
+                        </div>
+                        <!--product breadcrumb-->
+                        @await Html.PartialAsync("_ProductBreadcrumb", Model.Breadcrumb)
+                        @await Html.PartialAsync("_Discontinued", Model)
+                        <div class="product-name">
+                            <h1>
+                                @Model.Name
+                            </h1>
+                        </div>
+
+                        <!--short description-->
+                        @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                        {
+                            <div class="short-description">
+                                @Html.Raw(Model.ShortDescription)
+                            </div>
+                        }
+                        <!--SKU, MAN, GTIN, vendor-->
+                        @await Html.PartialAsync("_SKU_Man_GTIN_Ven", Model)
+                        <div class="attributes-wrapper">
+                            <!--attributes-->
+                            @{
+                                var dataDictAttributes = new ViewDataDictionary(ViewData);
+                                dataDictAttributes.TemplateInfo.HtmlFieldPrefix = $"attributes_{Model.Id}";
+                                @await Html.PartialAsync("_ProductAttributes", Model, dataDictAttributes)
+                            }
+                            <!--gift card-->
+                            @{
+                                var dataDictGiftCard = new ViewDataDictionary(ViewData);
+                                dataDictGiftCard.TemplateInfo.HtmlFieldPrefix = $"giftcard_{Model.Id}";
+                                var customGiftCardModel = new CustomGiftCardModel
+                                {
+                                    ProductDetailsModel = Model,
+                                    ViewDataDictionary = dataDictGiftCard
+                                };
+                                if (Model.GiftCard.IsGiftCard)
+                                {
+                                    @await Component.InvokeAsync("Widget", new { widgetZone = GiftVoucherDefaults.CUSTOM_WIDGET_GIFT_CARD, additionalData = customGiftCardModel })
+                                }
+                                @*@await Html.PartialAsync("_GiftCardInfo", Model.GiftCard, dataDictGiftCard)*@
+                            }
+                            <!--rental info-->
+                            @{
+                                var dataDictRental = new ViewDataDictionary(ViewData);
+                                dataDictRental.TemplateInfo.HtmlFieldPrefix = $"rental_{Model.Id}";
+                                @await Html.PartialAsync("_RentalInfo", Model, dataDictRental)
+                            }
+
+                            @await Html.PartialAsync("_ProductTierPrices", Model.TierPrices)
+                        </div>
+                        <div class="product-prices-box service-price-box">
+                            @*<button type="submit" class="button-1">Submit</button>*@
+                            @if (await customerService.IsGuestAsync(await workContext.GetCurrentCustomerAsync()))
+                            {
+                                <div class="service-request-not-registered-message">
+                                    @T("Plugins.Misc.ZimzoneAdditionalFeature.ServiceRequest.LoginMessage")
+                                </div>
+                            }
+                            else
+                            {
+                                <button type="button" id="add-to-cart-button-@Model.Id" class="button-1 add-to-cart-button" data-productid="@Model.Id" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new {productId = Model.Id, shoppingCartTypeId = (int) ShoppingCartType.ShoppingCart})', '#product-details-form');return false;">@T("Plugins.Misc.ZimzoneAdditionalFeature.Request.Sumbmit.Text")</button>
+                            }
+                        </div>
+                        @if (showShareButton)
+                        {
+                            @await Html.PartialAsync("_ShareButton", Model)
+                        }
+                        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsOverviewBottom, additionalData = Model })
+
+
+                    </div>
+                    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsEssentialBottom, additionalData = Model })
+                </div>
+
+                @{
+                    var productTabs = await Component.InvokeAsync("Widget", new { widgetZone = "seven_spikes_product_tabs", additionalData = Model });
+                    var storeId = (await storeContext.GetCurrentStoreAsync()).Id;
+
+                    var productsTabAreEnabled = !string.IsNullOrEmpty(await productTabs.RenderHtmlContentAsync());
+
+                    var isDescriptionTabEnabled = await settingService.GetSettingByKeyAsync("tabsettings.enableproductfulldescriptiontab", false, storeId, true);
+                    var isSpecificationsTabEnabled = await settingService.GetSettingByKeyAsync("tabsettings.enableproductspecificationstab", false, storeId, true);
+
+                    var shouldShowDescription = !string.IsNullOrEmpty(Model.FullDescription) && (!productsTabAreEnabled || !isDescriptionTabEnabled);
+                    var shouldShowSpecifications = !productsTabAreEnabled || !isSpecificationsTabEnabled;
+                }
+
+                @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsBeforeCollateral, additionalData = Model })
+
+                @if (productsTabAreEnabled)
+                {
+                    @productTabs
+                }
+
+                @if (shouldShowDescription)
+                {
+                    <div class="full-description">
+                        @Html.Raw(Model.FullDescription)
+                    </div>
+                }
+
+                @if (shouldShowSpecifications)
+                {
+                    <div class="product-collateral">
+                        @await Html.PartialAsync("_ProductSpecifications", Model.ProductSpecificationModel)
+                    </div>
+                }
+                @await Html.PartialAsync("_ProductTags", Model.ProductTags)
+                @{
+                    var relatedProducts = await Component.InvokeAsync("Widget", new { widgetZone = "productdetails_related_carosuel" });
+                    var alsoPurchased = await Component.InvokeAsync("Widget", new { widgetZone = "productdetails_purchased_carosuel" });
+
+                    if (String.IsNullOrEmpty(await relatedProducts.RenderHtmlContentAsync()))
+                    {
+                        <!-- related products grid -->
+                        @await Component.InvokeAsync("RelatedProducts", new { productId = Model.Id })
+                    }
+                    if (String.IsNullOrEmpty(await alsoPurchased.RenderHtmlContentAsync()))
+                    {
+                        <!-- also purchsed products grid -->
+                        @await Component.InvokeAsync("ProductsAlsoPurchased", new { productId = Model.Id })
+                    }
+                }
+                <div class="carousel-wrapper">
+                    @if (!String.IsNullOrEmpty(await relatedProducts.RenderHtmlContentAsync()))
+                    {
+                        @relatedProducts
+                    }
+                    @if (!String.IsNullOrEmpty(await alsoPurchased.RenderHtmlContentAsync()))
+                    {
+                        @alsoPurchased
+                    }
+                </div>
+            </div>
+        </form>
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsBottom, additionalData = Model })
+    </div>
+</div>
+<script asp-location="Footer">
+    $(document).ready(function () {
+        $('.remove-download-button').click(function () { $('ul.qq-upload-list-selector').html('') });
+    });
+</script>

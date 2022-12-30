@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Zimzone Additional Feature",
+  "SystemName": "Misc.ZimzoneAdditionalFeature",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.40" ],
+  "Author": "nopStation Team",
+  "DisplayOrder": 2,
+  "FileName": "Nop.Plugin.Misc.ZimzoneAdditionalFeature.dll",
+  "Description": "This plugin manages vouchers & services"
+}

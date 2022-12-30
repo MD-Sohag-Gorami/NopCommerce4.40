@@ -1,0 +1,73 @@
+﻿@inherits Nop.Web.Framework.Mvc.Razor.NopRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Nop.Web.Framework
+
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using Nop.Web.Framework.UI
+@using Nop.Web.Framework.Extensions
+@using System.Text.Encodings.Web
+@using Nop.Web.Models.Catalog
+@using Microsoft.AspNetCore.Mvc.ViewComponents
+@using Microsoft.Extensions.Primitives
+@using static Nop.Services.Common.NopLinksDefaults
+@using Nop.Web.Extensions
+@using Nop.Web.Framework
+@using Nop.Web.Framework.Models
+@using Nop.Web.Framework.Security.Captcha
+@using Nop.Web.Framework.Security.Honeypot
+@using Nop.Web.Framework.Themes
+@using Nop.Web.Models.Boards
+@using Nop.Web.Models.Cms
+@using Nop.Web.Models.Common
+@using Nop.Web.Models.Customer
+@using Nop.Web.Models.Media
+@using Nop.Web.Models.News
+@using Nop.Web.Models.Newsletter
+@using Nop.Web.Models.Order
+@using Nop.Web.Models.Polls
+@using Nop.Web.Models.PrivateMessages
+@using Nop.Web.Models.Profile
+@using Nop.Web.Models.ShoppingCart
+@using Nop.Web.Models.Topics
+@using Nop.Services.Configuration
+@using Nop.Web.Models.Vendors
+@using Nop.Web.Framework.Infrastructure
+@using Nop.Plugin.Misc.ZimzoneAdditionalFeature.Models
+@using Nop.Plugin.Misc.ZimzoneAdditionalFeature
+@using Nop.Services.Localization
+@using Nop.Services.Catalog
+@using Nop.Core.Domain.Directory
+@using Nop.Core
+@using SevenSpikes.Nop.Framework
+@using SevenSpikes.Nop.Framework.Theme
+
+@using Nop.Core.Domain.Tax
+
+@using System.Text.RegularExpressions
+
+@using Nop.Core.Infrastructure
+@using SevenSpikes.Nop.Plugins.AjaxCart.Domain
+@using SevenSpikes.Nop.Plugins.AjaxCart.Infrastructure.Constants
+@using SevenSpikes.Nop.Plugins.MegaMenu.Domain
+@using SevenSpikes.Nop.Plugins.MegaMenu.Domain.Enums
+@using SevenSpikes.Nop.Plugins.MegaMenu.Models
+@using SevenSpikes.Nop.Plugins.MegaMenu.Infrastructure.Constants
+@using SevenSpikes.Nop.Plugins.SaleOfTheDay.Domain
+@using SevenSpikes.Nop.Plugins.SaleOfTheDay.Models
+@using SevenSpikes.Nop.Plugins.QuickView.Domain
+@using SevenSpikes.Nop.Plugins.QuickView.Infrastructure.Constants
+
+@using Nop.Plugin.Misc.ZimzoneAdditionalFeature.Areas.Admin.Services
+@using Nop.Plugin.Misc.ZimzoneAdditionalFeature.Service
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Customers
+@using Nop.Services.Customers
+@using Nop.Web.Models.Checkout
+@using Nop.Web.Factories
+@using Nop.Plugin.Pickup.PickupInStore.Services
+@using Nop.Services.Orders
+@using Nop.Services.Common
+
+@using Nop.Services.Directory
+
+@using Nop.Plugin.Misc.ZimzoneAdditionalFeature.Service.Erp

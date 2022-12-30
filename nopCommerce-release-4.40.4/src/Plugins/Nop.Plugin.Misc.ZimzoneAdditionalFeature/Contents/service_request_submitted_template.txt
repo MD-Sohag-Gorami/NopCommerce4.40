@@ -1,0 +1,23 @@
+﻿
+<a href="%Store.URL%">%Store.Name%</a>
+<br />
+<br />
+Hello %ServiceRequest.CustomerName%,
+<br />
+We have received your %ServiceRequest.Name% request. We will get back to you after reviewing your service request.<br />
+<br />
+Below is the summary of the service request.
+<br />
+Request Number: %ServiceRequest.ReqestNumber%
+<br />
+<br />
+Date submited: %ServiceRequest.CreatedOn%
+<br />
+<br />
+Request Description: 
+<br />
+<br />
+%ServiceRequest.Description%<br />
+<br />
+Address: 
+%ServiceRequest.CustomerAddress%<br />

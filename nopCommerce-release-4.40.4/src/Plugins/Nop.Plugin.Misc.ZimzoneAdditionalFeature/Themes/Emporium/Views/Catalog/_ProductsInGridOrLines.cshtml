@@ -1,0 +1,60 @@
+﻿@model CatalogProductsModel
+@inject IZimzoneServiceEntityService zimzoneServices
+@inject IProductService productService
+@inject GiftVoucherSettings giftVoucherSettings
+@{
+    var serviceProductIds = (await zimzoneServices.GetAllZimzoneServiceAsync()).Where(x => x.IsActive && x.ServiceProductId > 0).Select(x => x.ServiceProductId).ToArray();
+    var serviceProductSkus = (await productService.GetProductsByIdsAsync(serviceProductIds)).Select(x => x.Sku).ToList();
+}
+@if (!string.IsNullOrEmpty(Model.WarningMessage))
+{
+    <div class="warning">
+        @Model.WarningMessage
+    </div>
+}
+
+@if (Model.Products.Count > 0)
+{
+    <div class="@(Model.ViewMode == "list" ? "product-list" : "product-grid")">
+        <div class="item-grid">
+            @foreach (var product in Model.Products)
+            {
+                if (serviceProductSkus.Contains(product.Sku))
+                {
+                     <div class="item-box">
+                        @await Html.PartialAsync("_ServiceProductBox", product)
+                    </div>
+                }
+                else if(product.Sku.Equals(giftVoucherSettings.ZimazonGiftProductSku, StringComparison.InvariantCultureIgnoreCase)
+                    || product.Sku.Equals(giftVoucherSettings.ElectrosalesGiftProductSku, StringComparison.InvariantCultureIgnoreCase))
+                {
+                     <div class="item-box">
+                        @await Html.PartialAsync("_GiftVoucherProductBox", product)
+                    </div>
+                }
+                else
+                {
+                    <div class="item-box">
+                        @await Html.PartialAsync("_ProductBox", product)
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+
+    var pager = Html.Pager(Model)
+        .QueryParam("pagenumber")
+        // for search page
+        .BooleanParameterName("advs")
+        .BooleanParameterName("isc")
+        .BooleanParameterName("sid")
+        .RenderEmptyParameters(true);
+
+    @if (!await pager.IsEmpty())
+    {
+        <div class="pager">
+            @pager
+        </div>
+    }
+}

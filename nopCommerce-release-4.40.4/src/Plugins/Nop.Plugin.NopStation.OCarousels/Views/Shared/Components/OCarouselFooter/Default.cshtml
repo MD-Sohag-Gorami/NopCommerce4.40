@@ -1,0 +1,28 @@
+﻿@inject Nop.Core.IWorkContext workContext
+
+@{
+    var supportRtl =(await workContext.GetWorkingLanguageAsync()).Rtl;
+    Html.AppendScriptParts(ResourceLocation.Footer, $"~/Plugins/NopStation.OCarousels/Contents/script/owl.carousel.min.js");
+    Html.AppendScriptParts(ResourceLocation.Footer, $"~/Plugins/NopStation.OCarousels/Contents/script/nopstation.carousel.js");
+    Html.AppendCssFileParts($"~/Plugins/NopStation.OCarousels/Contents/css/styles.css");
+
+    if (supportRtl)
+    {
+        Html.AppendCssFileParts($"~/Plugins/NopStation.OCarousels/Contents/css/rtl/owl.theme.green.min.css");
+        Html.AppendCssFileParts($"~/Plugins/NopStation.OCarousels/Contents/css/rtl/owl.carousel.css");
+    }
+    else
+    {
+        Html.AppendCssFileParts($"~/Plugins/NopStation.OCarousels/Contents/css/owl.theme.green.min.css");
+        Html.AppendCssFileParts($"~/Plugins/NopStation.OCarousels/Contents/css/owl.carousel.css");
+    }
+}
+
+<script asp-location="Footer">
+    var carouseldata = {};
+    carouseldata.CarouselFailure = '@T("NopStation.OCarousels.LoadingFailed")';
+
+    $(document).ready(function () {
+        Carousel.init('@Url.RouteUrl("OCarousel")', '.carousel-container', '.carousel-container .loader', carouseldata);
+    });
+</script>

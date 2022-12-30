@@ -1,0 +1,23 @@
+﻿@model ChangeCurrencyUsdMessageModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@inject IWebHelper webHelper
+@inject IProductService productService
+@inject IUrlRecordService urlRecordService
+@{
+    var returnUrl = webHelper.GetRawUrl(Context.Request);
+    if(returnUrl== "/GetMiniProductDetailsView")
+    {
+        var product = await productService.GetProductByIdAsync(Model.ProductId);
+        if(product!=null)
+        {
+            returnUrl = $"/{await urlRecordService.GetSeNameAsync(product)}";
+        } 
+    }
+    var currencyChangeUrl = Url.RouteUrl("ChangeCurrency", new { customercurrency = Model.DestinationCurrencyId, returnUrl }, webHelper.GetCurrentRequestProtocol());
+}
+<div class="change-currency-button-div">
+    <a class="change-currency-button" href="@currencyChangeUrl">
+        @T("Plugins.Misc.ZimzoneAdditionalFeature.Products.GiftCard.Electrosales.ChangeCurrencyButtonText")
+    </a>
+</div>

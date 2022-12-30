@@ -1,0 +1,25 @@
+﻿
+<a href="%Store.URL%">%Store.Name%</a>
+<br />
+<br />
+Hello %ServiceRequest.CustomerName%,
+<br />
+We have accepted your %ServiceRequest.Name% request. We have added the service in your <a href="%Store.URL%service-cart/"target="_blank">cart</a>. Please complete the payment.Below is the summary of the service request.
+<br />
+<br />
+Request Number: %ServiceRequest.ReqestNumber%
+<br />
+<br />
+Date submited: %ServiceRequest.CreatedOn%
+<br />
+<br />
+Request Description: 
+<br />
+<br />
+%ServiceRequest.Description%<br />
+<br />
+Address: 
+%ServiceRequest.CustomerAddress%<br />
+<br />
+%if(!string.IsNullOrEmpty(%ServiceRequest.QuoteDownLoadInfo%))<a href="%ServiceRequest.QuoteDownLoadInfo%/"target = "_blank" >Download Quote File</a>endif% 
+<br />

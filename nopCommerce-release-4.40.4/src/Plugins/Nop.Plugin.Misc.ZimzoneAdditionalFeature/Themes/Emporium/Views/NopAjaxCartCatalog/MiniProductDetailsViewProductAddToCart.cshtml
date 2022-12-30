@@ -1,0 +1,99 @@
+﻿@model Nop.Web.Models.Catalog.ProductDetailsModel.AddToCartModel
+@inject GiftVoucherSettings giftVoucherSettings
+@inject IProductService productService
+@inject IPriceFormatter priceFormatter
+@inject ILocalizationService localizationService
+@inject CurrencySettings currencySettings
+@inject IWorkContext workContext
+@{
+    Html.AddCssFileParts("~/Plugins/Misc.ZimzoneAdditionalFeature/Views/Contents/styles.css");
+}
+@{
+    var product = productService.GetProductByIdAsync(Model.ProductId).Result;
+    var priceInputSelector = "#addtocart_" + @Model.ProductId + "_CustomerEnteredPrice";
+    var giftCardDeliveryDateSelector = $"#giftcard_{@Model.ProductId}_GiftCardDeliveryDate";
+}
+
+@if (product.Sku == giftVoucherSettings.ElectrosalesGiftProductSku && workContext.GetWorkingCurrencyAsync().Result.CurrencyCode != GiftVoucherDefaults.USD_CURRENCY_CODE)
+{
+    @await Component.InvokeAsync("Widget", new { widgetZone = GiftVoucherDefaults.CUSTOM_WIDGET_GIFT_VOUCHER_CHANGE_TO_USD_MESSAGE, additionalData = Model.ProductId })
+}
+else
+{
+
+    <script>
+        function changePriceAmount(value) {
+            $('@priceInputSelector').val(value);
+            return false;
+        };
+
+        $(".custom-price-buttons").on("change", function () {
+            if ($(this).is(":checked")) {
+                changePriceAmount($(this).val())
+            }
+        });
+
+        $(function () {
+            var selectedDate = $('@giftCardDeliveryDateSelector').val();
+            var validUpto = $('#giftcard-valid-upto').val();
+            var datepicker = $('#gift-card-delivery-date-chooser').datepicker({
+                onSelect: function (text) {
+                     $('@giftCardDeliveryDateSelector').val(text);
+                },
+            });
+            datepicker.datepicker('setDate', selectedDate);
+            datepicker.datepicker('option', {
+                minDate: '0', maxDate: validUpto });
+            });
+    </script>
+    @if (Model.CustomerEntersPrice)
+    {
+        var isZimazonGiftCard = (product?.Sku == giftVoucherSettings.ZimazonGiftProductSku);
+        var isPrimaryCurrency = workContext.GetWorkingCurrencyAsync().Result?.Id == currencySettings.PrimaryStoreCurrencyId;
+        var priceRange = !isPrimaryCurrency && isZimazonGiftCard ? string.Format(localizationService.GetResourceAsync("Products.EnterProductPrice.Range").Result, priceFormatter.FormatPriceAsync(10, false, false).Result, priceFormatter.FormatPriceAsync(750, false, false).Result) : Model.CustomerEnteredPriceRange;
+        var customerEnterdPrice = Convert.ToInt32(Math.Ceiling(Model.CustomerEnteredPrice));
+        if (customerEnterdPrice < 10)
+        {
+            customerEnterdPrice = 10;
+        }
+        <div class="customer-entered-price">
+            <div class="price-input">
+                @await Component.InvokeAsync("Widget", new { widgetZone = GiftVoucherDefaults.CUSTOM_WIDGET_GIFT_VOUCHER_PRICE_SELCT_BUTTONS, additionalData = Model.ProductId })
+                <label asp-for="CustomerEnteredPrice" asp-postfix=":" class="enter-price-label"></label>
+                @*round price*@
+                <input asp-for="CustomerEnteredPrice" oninput="this.value=(parseInt(this.value)||0)" value="@customerEnterdPrice" class="enter-price-input" />
+            </div>
+            <div class="price-range">
+                @priceRange
+            </div>
+            @await Component.InvokeAsync("Widget", new { widgetZone = GiftVoucherDefaults.CUSTOM_WIDGET_GIFT_VOUCHER_DELIVERYDATE, additionalData = Model.ProductId })
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(Model.MinimumQuantityNotification))
+    {
+        <div class="min-qty-notification">@Model.MinimumQuantityNotification</div>
+    }
+    <div class="add-to-cart">
+        @if (!Model.DisableBuyButton)
+        {
+            <label asp-for="EnteredQuantity" asp-postfix=":" class="qty-label"></label>
+
+            @if (Model.AllowedQuantities.Count > 0)
+            {
+                 <select asp-for="EnteredQuantity" asp-items="Model.AllowedQuantities" class="qty-dropdown"></select>
+            }
+            else
+            {
+                // asp-for is not binding the correct value to the input
+                var inputElementName = $"addtocart_{Model.ProductId}.EnteredQuantity";
+                <div class="add-to-cart-qty-wrapper">
+                    <input class="qty-input" type="text" id="@inputElementName" name="@inputElementName" value="@Model.EnteredQuantity" />
+                    <span class="plus">i</span>
+                    <span class="minus">h</span>
+                </div>
+            }
+
+            @await Component.InvokeAsync("NopAjaxCartMiniProductDetailsViewAddToCartButton", Model)
+        }
+    </div>
+}

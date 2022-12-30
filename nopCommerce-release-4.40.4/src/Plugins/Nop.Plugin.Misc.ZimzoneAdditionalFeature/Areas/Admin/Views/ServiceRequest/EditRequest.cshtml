@@ -1,0 +1,228 @@
+﻿@model ServiceRequestModel
+@{
+    Layout = "_AdminLayout";
+    ViewBag.PageTitle = T("Plugins.Misc.ZimzoneAdditionalFeature.EditRequest").Text;
+    Html.SetActiveMenuItemSystemName("AdditionalFeature.Service.Requests");
+}
+<form asp-controller="ServiceRequest" asp-action="EditRequest" method="post" id="request-form">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Plugins.Misc.ZimzoneAdditionalFeature.EditRequest") - @Model.ServiceName
+            <small>
+                <i class="fas fa-arrow-circle-left"></i>
+                <a asp-action="RequestList">@T("Plugins.Misc.ZimzoneAdditionalFeature.Admin.Request.BackToList")</a>
+            </small>
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <span id="request-delete" class="btn btn-danger">
+                <i class="far fa-trash-alt"></i>
+                @T("Admin.Common.Delete")
+            </span>
+            <button type="submit" id="btnRefreshPage" style="display: none"></button>
+            <script>
+                $(document).ready(function () {
+                    $('#btnRefreshPage').click(function () {
+                        //refresh pageed
+                        location.reload();
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+    <div asp-validation-summary="All"></div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+
+                <div class="card-body">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="ServiceName" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.ServiceName</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="OrderId" />
+                                </div>
+                                <div class="col-md-9">
+                                    @if (Model.OrderId > 0)
+                                    {
+                                        <div class="form-text-row">
+                                            <a asp-controller="Order" asp-action="Edit" asp-route-id="@Model.OrderId">@T("Plugins.Misc.ZimzoneAdditionalFeature.Admin..ViewOrder")-@Model.OrderId</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-text-row">
+                                            @T("Plugins.Misc.ZimzoneAdditionalFeature.PaymentPending")
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="CreatedOn" />
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-text-row">@Model.CreatedOn</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="CustomerName" />
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-text-row">@Model.CustomerName</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="CustomerEmail" />
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-text-row">@Model.CustomerEmail</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="CustomName" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="CustomName" />
+                                <span asp-validation-for="CustomName"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="@Model.Description" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="@Model.Description" asp-template="RichEditor" />
+                                <span asp-validation-for="@Model.Description"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="@Model.CustomerAddress" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="@Model.CustomerAddress" />
+                                <span asp-validation-for="@Model.CustomerAddress"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="DownloadGuid" />
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-text-row">
+                                    @if (!string.IsNullOrEmpty(Model.DownloadGuid))
+                                    {
+                                        <a asp-action="GetFile" asp-route-downloadGuid="@Model.DownloadGuid" class="btn btn-info">
+                                            <i class="fas fa-download"></i>
+                                            @T("Download")
+                                        </a>
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="QuoteDownloadId" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="QuoteDownloadId" />
+                                <span asp-validation-for="QuoteDownloadId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-3">
+                                <nop-label asp-for="AgreedAmount" />
+                            </div>
+                            <div class="col-lg-9">
+                                @*@if (!Model.IsLoggedInAsVendor)
+                {*@
+                                <script>
+                                    $(document).ready(function () {
+                                        toggleEditAgreedAmount(false);
+                                    });
+
+                                    function toggleEditAgreedAmount(editmode) {
+                                        if (editmode) {
+                                            $('#lblAgreedAmount').hideElement();
+                                            $('#divAgreedAmount').showElement();
+                                            $('#btnEditAgreedAmount').hideElement();
+                                            $('#btnSaveAgreedAmount').showElement();
+                                            $('#btnCancelAgreedAmount').showElement();
+                                        } else {
+                                            $('#lblAgreedAmount').showElement();
+                                            $('#divAgreedAmount').hideElement();
+                                            $('#btnEditAgreedAmount').showElement();
+                                            $('#btnSaveAgreedAmount').hideElement();
+                                            $('#btnCancelAgreedAmount').hideElement();
+                                        }
+
+                                    }
+                                </script>
+                                <div class="input-group input-group-short">
+                                    <div id="lblAgreedAmount" class="input-group-text">
+                                        @Model.AgreedAmount
+                                    </div>
+                                    <div id="divAgreedAmount">
+                                        <nop-editor asp-for="AgreedAmount" />
+                                    </div>
+                                    <span class="input-group-append">
+                                        <button type="submit" onclick="toggleEditAgreedAmount(true);return false;" id="btnEditAgreedAmount" class="btn btn-primary">
+                                            @T("Admin.Common.Edit")
+                                        </button>
+
+                                        <button type="submit" id="btnSaveAgreedAmount" name="save-shipping-method" class="btn btn-primary">
+                                            @T("Plugins.Misc.ZimzoneAdditionalFeature.Admin.SaveAndAccept")
+                                        </button>
+                                        <nop-action-confirmation asp-button-id="btnSaveAgreedAmount" />
+
+                                        <button type="submit" onclick="toggleEditAgreedAmount(false);return false;" id="btnCancelAgreedAmount" class="btn btn-secondary">
+                                            @T("Admin.Common.Cancel")
+                                        </button>
+                                    </span>
+                                </div> @*}
+                else
+                {
+                    <div id="lblAgreedAmount">
+                        <div class="form-text-row">@Model.AgreedAmount</div>
+                    </div>}*@
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </section>
+</form>
+<nop-delete-confirmation asp-model-id="@Model.Id" asp-button-id="request-delete" />

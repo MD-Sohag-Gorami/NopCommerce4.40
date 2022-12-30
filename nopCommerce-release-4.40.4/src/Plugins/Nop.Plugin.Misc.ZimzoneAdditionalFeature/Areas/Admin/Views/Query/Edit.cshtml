@@ -1,0 +1,177 @@
+﻿@model QuestionModel
+@{
+    Layout = "_AdminLayout";
+    ViewBag.PageTitle = T("Plugins.Misc.ZimzoneAdditionalFeature.EditQuery").Text;
+    Html.SetActiveMenuItemSystemName("AdditionalFeature.Queries");
+}
+<form asp-controller="Query" asp-action="Edit" method="post" id="request-form">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Plugins.Misc.ZimzoneAdditionalFeature.EditQuery")
+            <small>
+                <i class="fas fa-arrow-circle-left"></i>
+                <a asp-action="QueryList">@T("Plugins.Misc.ZimzoneAdditionalFeature.Admin.Question.BackToList")</a>
+            </small>
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <span id="request-delete" class="btn btn-danger">
+                <i class="far fa-trash-alt"></i>
+                @T("Admin.Common.Delete")
+            </span>
+            <button type="submit" id="btnRefreshPage" style="display: none"></button>
+            <script>
+                $(document).ready(function () {
+                    $('#btnRefreshPage').click(function () {
+                        //refresh pageed
+                        location.reload();
+                    });
+                });
+            </script>
+        </div>
+    </div>
+
+    <div asp-validation-summary="All"></div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+
+                <div class="card-body">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="FullName" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.FullName</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="Email" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.Email</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="PhoneNumber" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.PhoneNumber</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="ProductName" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.ProductName</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="ProductDescription" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.ProductDescription</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="Message" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.Message</div>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.AdditionalLink))
+                            {
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <nop-label asp-for="AdditionalLink" />
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-text-row">
+                                            @Model.AdditionalLink
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="DownloadGuid" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">
+                                        @if (!string.IsNullOrEmpty(Model.DownloadGuid))
+                                        {
+                                            <a asp-action="GetFile" asp-route-downloadGuid="@Model.DownloadGuid" class="btn btn-info">
+                                                <i class="fas fa-download"></i>
+                                                @T("Download")
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="AdminComment" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-textarea asp-for="AdminComment" />
+                                    <span asp-validation-for="AdminComment"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="MarkedAsRead" />
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="MarkedAsRead" />
+                                </div>
+                            </div>
+
+                            @if (Model.MarkedBy > 0)
+                            {
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <nop-label asp-for="MarkedBy" />
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-text-row">@Model.MarkedByUserName</div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="CreatedOn" />
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-text-row">@Model.CreatedOn</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</form>
+<nop-delete-confirmation asp-model-id="@Model.Id" asp-button-id="request-delete" />

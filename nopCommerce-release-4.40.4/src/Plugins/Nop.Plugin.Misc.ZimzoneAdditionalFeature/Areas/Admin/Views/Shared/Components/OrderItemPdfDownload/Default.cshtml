@@ -1,0 +1,6 @@
+﻿@model int
+
+<a asp-action="OrderItemPdf" asp-controller="OrderItemPdfDownload" asp-route-orderId="@Model" class="btn btn-info">
+    <i class="far fa-file-pdf"></i>
+    @T("Plugins.Misc.ZimzoneAdditionalFeature.OrderItemPdfDownload.DownloadButton")
+</a>

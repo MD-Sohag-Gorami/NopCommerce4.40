@@ -1,0 +1,160 @@
+﻿@model CustomStatusListWithOrderModel
+
+<style>
+    #customOrderStatusInfoUpdateNotification {
+        color: green;
+        font-weight: bold;
+    }
+</style>
+
+
+<input asp-for="ParentOrderStatusId" type="hidden" />
+<input asp-for="OrderId" type="hidden" />
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="CustomOrderStatusId" />
+    </div>
+    <div class="col-md-3">
+        <nop-select asp-for="CustomOrderStatusId" asp-items="Model.CustomOrderStatus" />
+        <span asp-validation-for="CustomOrderStatusId"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsMarkedToSendEmail" />
+    </div>
+    <div class="col-md-3">
+        <nop-editor asp-for="IsMarkedToSendEmail" />
+        <span asp-validation-for="IsMarkedToSendEmail"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        <button type="button" name="save" class="btn btn-primary" id="customOrderStatusForm">
+            @T("Admin.Common.Save")
+        </button>
+        @if (Model.Id > 0)
+        {
+        <button type="button" name="clear" class="btn btn-warning" id="customOrderStatusClear">
+            @T("Admin.Common.Clear")
+        </button>
+        }
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3" id="customOrderStatusInfoUpdateNotification">
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#customOrderStatusForm').on('click', function () {
+
+            var customOrderStatusId = $('#CustomOrderStatusId').val();
+            var parentOrderStatusId = $('#ParentOrderStatusId').val();
+            var orderId = $('#OrderId').val();
+            var isMarkedToSendEmail = $('#IsMarkedToSendEmail').is(':checked');
+            var id = @Model.Id;
+
+            var postData = {
+                Id: id,
+                CustomOrderStatusId: customOrderStatusId,
+                ParentOrderStatusId: parentOrderStatusId,
+                OrderId: orderId,
+                IsMarkedToSendEmail: isMarkedToSendEmail
+            };
+
+            addAntiForgeryToken(postData);
+
+            var route = "@(Url.Action("AddCustomOrderStatusInOrder", "CustomOrderStatus"))";
+
+            $.ajax({
+                cache:false,
+                method:"POST",
+                url:route,
+                data:postData,
+                success: function (data, textStatus, jqXHR) {
+                    if (data.Result) {
+                        console.log(window.location);
+                        window.setLocation(window.location);
+                        $('#customOrderStatusInfoUpdateNotification').text('Successfully updated').css('color', 'green');
+                        $('#customOrderStatusInfoUpdateNotification').show();
+                        $('#customOrderStatusInfoUpdateNotification').delay(3500).fadeOut('slow');
+                    }
+                    else {
+                        $('#customOrderStatusInfoUpdateNotification').text('Failed to update').css('color','red');
+
+                        $('#customOrderStatusInfoUpdateNotification').show();
+                        $('#customOrderStatusInfoUpdateNotification').delay(3500).fadeOut('slow');
+                    }
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#customOrderStatusInfoUpdateNotification').text('Failed to update').css('color', 'red');
+                    $('#customOrderStatusInfoUpdateNotification').show();
+                    $('#customOrderStatusInfoUpdateNotification').delay(3500).fadeOut('slow');
+                },
+
+                complete: function (jqXHR, textStatus) {
+
+                }
+            });
+            return false;
+        });
+
+        $('#IsMarkedToSendEmail').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#customOrderStatusForm').text("Save and Notify");
+            }
+            else {
+                $('#customOrderStatusForm').text("Save");
+            }
+        });
+
+        $('#customOrderStatusClear').on('click', function () {
+            var id = @Model.Id;
+            var postData = {
+                Id: id
+            };
+
+            addAntiForgeryToken(postData);
+
+            var route = "@(Url.Action("DeleteCustomOrderStatusInOrder", "CustomOrderStatus"))";
+            $.ajax({
+                cache: false,
+                method: "POST",
+                url: route,
+                data: postData,
+                success: function (data, textStatus, jqXHR) {
+                    if (data.Result) {
+                        window.setLocation(window.location);
+                        $('#customOrderStatusInfoUpdateNotification').text('Successfully updated').css('color', 'green');
+                        $('#customOrderStatusInfoUpdateNotification').show();
+                        $('#customOrderStatusInfoUpdateNotification').delay(3500).fadeOut('slow');
+                    }
+                    else {
+                        $('#customOrderStatusInfoUpdateNotification').text('Failed to update').css('color', 'red');
+
+                        $('#customOrderStatusInfoUpdateNotification').show();
+                        $('#customOrderStatusInfoUpdateNotification').delay(3500).fadeOut('slow');
+                    }
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#customOrderStatusInfoUpdateNotification').text('Failed to update').css('color', 'red');
+                    $('#customOrderStatusInfoUpdateNotification').show();
+                    $('#customOrderStatusInfoUpdateNotification').delay(3500).fadeOut('slow');
+                },
+
+                complete: function (jqXHR, textStatus) {
+
+                }
+            });
+        });
+    });
+</script>

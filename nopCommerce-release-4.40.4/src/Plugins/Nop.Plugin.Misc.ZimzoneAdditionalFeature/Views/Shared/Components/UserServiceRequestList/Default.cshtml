@@ -1,0 +1,29 @@
+﻿@inject IHttpContextAccessor httpContextAccessor
+@{
+    Html.AddCssFileParts("~/Plugins/Misc.ZimzoneAdditionalFeature/Views/Contents/styles.css");
+    httpContextAccessor.HttpContext.Session.SetString("ServiceRequestList", "");   //Session["MyticketAdd"] = null;
+
+    var controllerName = Url.ActionContext.RouteData.Values["controller"].ToString();
+    var actionName = Url.ActionContext.RouteData.Values["action"].ToString();
+
+    var isWidgetsTicketMyAccountController = controllerName.Equals("ServiceRequest", StringComparison.InvariantCultureIgnoreCase);
+    var isMyTicketPage = isWidgetsTicketMyAccountController && (actionName.Equals("ServiceRequestList", StringComparison.InvariantCultureIgnoreCase));
+}
+
+@if (ViewBag.IsMobile != null)
+{
+    @if (isMyTicketPage)
+    {
+        <option selected="selected" value="@Url.RouteUrl("Customer.ServiceRequests")">@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.ServiceRequests")</option>
+    }
+    else
+    {
+        <option value="@Url.RouteUrl("Customer.ServiceRequests")">@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.ServiceRequests")</option>
+    }
+}
+else
+{
+    <li class="user-service-nav @(isMyTicketPage ? "active" : "inactive")">
+        <a href="@Url.RouteUrl("Customer.ServiceRequests")" class="@(isMyTicketPage ? "active" : "inactive")">@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.ServiceRequests")</a>
+    </li>
+}

@@ -1,0 +1,370 @@
+﻿
+@media (min-width: 1025px) {
+  .category-navigation-list-wrapper {
+    display: block;
+    width: 20%;
+    float: left;
+  }
+
+  .header-menu ul.mega-menu {
+    display: block;
+    width: 75%;
+    float: right;
+  }
+
+  li.custom-mega-menu-item-voucher {
+    float: left !important;
+  }
+
+  .header-menu > ul > li {
+    float: right;
+  }
+}
+
+.custom-mega-menu-item-voucher span {
+  color: #1076c0;
+  font-size: 15px;
+}
+
+.menu-title {
+  display: none;
+}
+
+@media (min-width: 1400px) {
+  li.custom-mega-menu-item-voucher:first-child {
+    margin-right: 20%;
+  }
+}
+
+
+
+/*priceselectbutton*/
+
+
+
+.custom-price-buttons {
+  display: none !important;
+}
+
+  .custom-price-buttons + label::before {
+    display: none !important;
+  }
+
+  .custom-price-buttons + label {
+    display: inline-block !important;
+    width: auto !important;
+    border: 1px solid #ddd;
+    padding: 5px 15px;
+    border-radius: 6px;
+  }
+
+  .custom-price-buttons:checked + label {
+    border-color: #e66e29;
+    color: #000;
+    background: rgba(230, 110, 41,0.2);
+  }
+
+.gift-card-delivery-date {
+  display: block;
+  font-size: 15px;
+  margin: 0 0 5px;
+  font-weight: bold;
+  color: #444444;
+}
+
+.gift-card-delivery-date-message {
+  color: #8c8c8c;
+}
+
+.gift-card-delivery-date-label {
+  font-size: 18px;
+}
+
+#ui-datepicker-div {
+  display: none;
+}
+
+a.change-currency-button {
+  outline: none;
+  padding: 5px;
+  color: #1076c0;
+  font-weight: bold;
+  box-shadow: 0 3px 10px #eee;
+  border: 1px solid #EEE;
+  background-color: #FFF;
+}
+
+.change-currency-button-div {
+  margin: 8px 0;
+}
+
+.change-currency-to-usd-message {
+  color: #ff4f60;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 5px 0;
+}
+
+.product-prices-box .electrosales-currency-not-supported {
+  padding-top: 10px !important;
+}
+
+.electrosales-currency-information {
+  display: block;
+  font-size: 12px;
+  color: #ff4f60;
+}
+
+.block-account-navigation.block .list a.active:after {
+  color: #1076c0 !important;
+}
+
+.block-account-navigation.block .list a.inactive:hover {
+  color: #1076c0;
+}
+
+.gift-box-nav a::after {
+  content: "\e90b";
+}
+
+.user-service-nav a::after {
+  content: "\52";
+}
+
+button.button-2.order-details-button {
+  margin-right: 5px;
+}
+
+@media (min-width: 1025px) {
+
+  .block-account-navigation.block .list a.active {
+    border-right: 2px solid #1076c0 !important;
+    color: #1076c0 !important;
+  }
+
+  .block-account-navigation.block .list a.inactive {
+    color: #b7b7b7;
+    transition: all .2s ease;
+  }
+}
+
+.request-submitted-title {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  margin: 10px auto;
+}
+
+.request-submitted-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.request-submitted-buttons-link {
+  display: block;
+  padding: 10px;
+  background: aquamarine;
+  border-radius: 3px;
+  background-color: #eebe00;
+  color: #fff;
+  font-weight: 700;
+  margin: 0 5px;
+}
+
+.book-a-service-page .qq-uploader .qq-upload-drop-area,
+.book-a-service-page .qq-uploader .qq-upload-extra-drop-area {
+  width: 100%;
+  border: none;
+  background: none;
+  position: relative;
+  display: block;
+}
+
+.book-a-service-page .qq-uploader .qq-upload-button {
+  float: left;
+}
+
+.book-a-service-page .qq-uploader .qq-upload-list {
+  border: none;
+}
+
+.book-a-service-page .form-fields .inputs.half-width {
+  width: 49% !important;
+  margin-top: 20px;
+}
+
+.book-a-service-page .form-fields .inputs {
+  width: 100%;
+}
+
+.book-a-service-page .form-fields {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+  .book-a-service-page .form-fields .inputs > .required {
+    right: 5px;
+  }
+
+.product-prices-box.service-price-box > div:first-child {
+  border: none;
+}
+
+.order-confirm-page ul.info-list li.custom-value {
+  display: none;
+}
+
+.service-request-not-registered-message {
+  font-size: 20px;
+  font-weight: 700;
+  color: red;
+}
+
+a.ui-state-default {
+  font-weight: 700;
+  background: #dbffff;
+}
+
+td.ui-datepicker-unselectable.ui-state-disabled {
+  color: #635f5f;
+  background-color: #e9eef2;
+}
+
+.ui-datepicker-calendar td a:hover {
+  background-color: #1076c0;
+  color: #FFF;
+}
+
+.remove-gift-card-button-wrapper {
+  margin: 5px 0;
+}
+
+button.remove-gift-card-button {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0;
+}
+
+.coupon-remove-button {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.giftcard-summary td.cart-total-left {
+  white-space: nowrap;
+}
+
+.gift-card-coupon-remove-button-message {
+  color: #dd0f0f;
+}
+
+
+
+
+.currency-selector.desktop label span {
+  display: inline-block;
+  padding-right: 15px;
+}
+
+.currency-selector.desktop input:checked ~ label {
+  background: #03a84e;
+  color: #fff !important;
+}
+
+.currency-selector.desktop input[type="radio"] + label:before, input[type="checkbox"] + label:before {
+  display: none;
+}
+
+.currency-selector.desktop:hover input[type="radio"] + label:before, input[type="checkbox"] + label:before {
+  display: inline-block;
+}
+
+.currency-change-text-message {
+  background: #333;
+  padding: 8px 15px;
+  opacity: 0;
+  max-width: 265px;
+  text-align: center;
+}
+
+.currency-selector.desktop:hover .currency-change-text-message {
+  opacity: 1;
+}
+
+.currency-selector.desktop li {
+  text-align: left;
+  padding: 1px 0;
+}
+
+.currency-selector.desktop label {
+  font-size: 15px;
+  display: block;
+  background: #FF0000;
+  padding: 10px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.currency-selector.desktop {
+  position: fixed;
+  top: 30%;
+  z-index: 55555;
+  color: #fff !important;
+  padding: 0 5px;
+  right: -230px;
+  font-size: 15px;
+  transition: all 0.3s;
+}
+
+  .currency-selector.desktop:hover {
+    right: -17px;
+  }
+
+  .currency-selector.desktop::before {
+    display: none;
+  }
+
+.header-selectors-wrapper select option {
+  color: #000 !important;
+}
+
+.header-selectors-wrapper select {
+  color: #fff;
+}
+
+#bank-transfer-details-see-more-link:hover {
+  text-decoration: underline;
+}
+
+.product-prices-box.service-price-box {
+  position: relative;
+  top: initial;
+  right: initial;
+  left: initial;
+  width: 300px;
+  text-align: left;
+  margin: 20px 0;
+}
+
+.product-prices-box.service-price-box .ajax-cart-button-wrapper {
+    padding-left: 0;
+}
+
+.request-details {
+  font-size: 16px;
+  color: #0f0f0f;
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 5px 0;
+}
+
+.request-address {
+  font-size: 16px;
+  color: #0f0f0f;
+  line-height: 1.5;
+  font-weight: 300;
+}

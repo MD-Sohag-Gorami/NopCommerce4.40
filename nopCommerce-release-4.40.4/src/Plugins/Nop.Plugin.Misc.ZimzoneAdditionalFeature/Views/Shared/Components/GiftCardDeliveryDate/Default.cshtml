@@ -1,0 +1,29 @@
+﻿@model GiftCardDeliveryDateModel
+@{
+    var giftCardDeliveryDateSelector = $"#giftcard_{Model.ProductId}_GiftCardDeliveryDate";
+    Html.AddCssFileParts("~/Plugins/Misc.ZimzoneAdditionalFeature/Views/Contents/styles.css");
+}
+<script asp-location="Footer">
+    $(function () {
+
+        var selectedDate = $('@giftCardDeliveryDateSelector').val();
+        var validUpto = $('#giftcard-valid-upto').val();
+        var datepicker = $('#gift-card-delivery-date-chooser').datepicker({
+            onSelect: function (text) {
+                 $('@giftCardDeliveryDateSelector').val(text);
+            },
+        });
+        //datepicker.datepicker('setDate', selectedDate);
+        datepicker.datepicker('option', {
+            minDate: '0', maxDate: validUpto, dateFormat: 'dd/mm/yy'
+        });
+        datepicker.datepicker('setDate', selectedDate);
+            });
+
+</script>
+<div class="gift-card-delivery-date">
+    <label class="gift-card-delivery-date-label">Delivery Date:</label>
+    <input readonly type="text" id="gift-card-delivery-date-chooser">
+    <div class="gift-card-delivery-date-message">@Model.DeliveryDateMessage</div>
+</div>
+<input type="hidden" id="giftcard-valid-upto" name="giftcard-valid-upto" value="@Model.ValidUpto" />

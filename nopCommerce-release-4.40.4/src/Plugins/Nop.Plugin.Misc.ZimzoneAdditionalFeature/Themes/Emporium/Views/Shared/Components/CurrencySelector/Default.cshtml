@@ -1,0 +1,101 @@
+﻿@model CurrencySelectorModel
+@using Nop.Web.Models.Common;
+@using Microsoft.AspNetCore.Http
+@using System.Net
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@using Nop.Services.Orders
+@using Nop.Services.Catalog
+
+@inject Nop.Core.IWebHelper webHelper
+@inject IHttpContextAccessor httpContextAccessor
+@inject IShoppingCartService shoppingCartService
+@inject IWorkContext workContext
+@inject IProductService productService
+@inject GiftVoucherSettings giftVoucherSettings
+@inject ICurrencyService currencyService
+@{
+    var customer = workContext.GetCurrentCustomerAsync().Result;
+    var shoppingCartProductIds = shoppingCartService.GetShoppingCartAsync(customer).Result.Select(x => x.ProductId).ToArray();
+    var skus = productService.GetProductsByIdsAsync(shoppingCartProductIds).Result.Select(x => x.Sku);
+
+}
+
+@if (Model.AvailableCurrencies.Count > 1)
+{
+    <div class="currency-selector desktop">
+        @{
+            var returnUrl = webHelper.GetRawUrl(Context.Request);
+            var currencies = await Model.AvailableCurrencies.SelectAwait(async x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = Url.RouteUrl("ChangeCurrency", new { customercurrency = x.Id, returnUrl }, webHelper.GetCurrentRequestProtocol()),
+                Selected = x.Id.Equals(Model.CurrentCurrencyId)
+            }).ToListAsync();
+            var currencyIterator = 0;
+            <div class="currency-change-text-message">
+                @T("Plugins.Misc.ZimzoneAdditionalFeature.CurrencyChange.TextMessage")
+            </div>
+            <ul>
+
+                @foreach (var currency in currencies)
+                {
+                    var c = await currencyService.GetCurrencyByIdAsync(@Model.AvailableCurrencies[currencyIterator].Id);
+                    <li>
+                        @if (currency.Selected)
+                        {
+                            <input id="currency-input-@Model.AvailableCurrencies[currencyIterator].Id" type="radio" checked name="customerCurrency" value="@currency.Value" onchange="setLocation(this.value)" />
+                        }
+                        else
+                        {
+                            <input id="currency-input-@Model.AvailableCurrencies[currencyIterator].Id" type="radio" name="customerCurrency" value="@currency.Value" onchange="setLocation(this.value)" />
+                        }
+                    <label for="currency-input-@Model.AvailableCurrencies[currencyIterator].Id">
+                        @if (c != null)
+                        {
+                            <span>
+                                @c.CurrencyCode
+                            </span>
+                            @currency.Text
+                        }
+
+                    </label>
+                    </li>
+                    currencyIterator++;
+                }
+            </ul>
+            @*<select id="customerCurrency" name="customerCurrency" asp-items="@currencies" onchange="setLocation(this.value);" aria-label="@T("Currency.Selector.Label")"></select>*@
+        }
+
+    </div>
+
+    <div class="currency-selector mobile mobile-selector">
+        @{
+            var currentCurrency = Model.AvailableCurrencies.FirstOrDefault(x => x.Id.Equals(Model.CurrentCurrencyId));
+
+            <div class="current-currency-selector selector-title">@currentCurrency.Name</div>
+
+            <div class="currency-selector-options mobile-collapse">
+
+                @for (int i = 0; i < Model.AvailableCurrencies.Count; i++)
+                {
+                    var currentCurrencyIterator = Model.AvailableCurrencies[i];
+
+                    string selected = string.Empty;
+
+                    if (currentCurrencyIterator.Id == currentCurrency.Id)
+                    {
+                        selected = " checked=\"checked\"";
+                    }
+
+                    <div class="selector-options-item">
+                        <input type="radio" name="currency-selector" id="currency-@i" value="@webHelper.ModifyQueryString(Url.RouteUrl("ChangeCurrency", new { customercurrency = currentCurrencyIterator.Id }, webHelper.GetCurrentRequestProtocol()), "returnurl", webHelper.GetRawUrl(httpContextAccessor.HttpContext.Request))" onclick="setLocation(this.value);" @Html.Raw(selected) />
+                        <label for="currency-@i">@currentCurrencyIterator.Name</label>
+                    </div>
+                }
+
+            </div>
+
+        }
+    </div>
+}

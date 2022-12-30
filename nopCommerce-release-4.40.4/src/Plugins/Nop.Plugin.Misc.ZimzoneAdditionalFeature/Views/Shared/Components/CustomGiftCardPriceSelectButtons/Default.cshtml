@@ -1,0 +1,27 @@
+﻿@model CustomPriceButtonsModel
+@using System.Globalization
+@inject IWorkContext workContext
+@{
+    var priceInputSelector = "#addtocart_" + @Model.ProductId + "_CustomerEnteredPrice";
+    var currency = workContext.GetWorkingCurrencyAsync().Result;
+}
+
+<script asp-location="Footer">
+    function changePriceAmount(value) {
+        $('@priceInputSelector').val(value);
+        return false;
+    };
+
+    $(".custom-price-buttons").on("change", function () {
+        if ($(this).is(":checked")) {
+            changePriceAmount($(this).val())
+        }
+    })
+</script>
+
+@foreach (var price in Model.AvailableAmounts)
+{
+    var selector = $"pricevalue{price}";
+    <input type="radio" id="@selector" name="custom-price-button" class="custom-price-buttons" value="@price">
+    <label for="@selector">@price.ToString("C", new CultureInfo(currency.DisplayLocale))</label>
+}

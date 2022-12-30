@@ -1,0 +1,122 @@
+﻿@model ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+    Html.SetActiveMenuItemSystemName("AdditionalFeature.ErpSync.Configure");
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+
+
+<form asp-controller="ErpSync" asp-action="Configure" method="post">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+                @*@T("Plugins.Widgets.GoogleAnalytics.Instructions")*@              
+            </div>
+        </div>
+        <div class="card card-default">
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ProductSyncUrl_OverrideForStore" asp-input="ProductSyncUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ProductSyncUrl" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ProductSyncUrl" />
+                        <span asp-validation-for="ProductSyncUrl"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="CategorySyncUrl_OverrideForStore" asp-input="CategorySyncUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="CategorySyncUrl" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="CategorySyncUrl" />
+                        <span asp-validation-for="CategorySyncUrl"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ManufacturerSyncUrl_OverrideForStore" asp-input="ManufacturerSyncUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ManufacturerSyncUrl" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ManufacturerSyncUrl" />
+                        <span asp-validation-for="ManufacturerSyncUrl"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="StockSyncUrl_OverrideForStore" asp-input="StockSyncUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="StockSyncUrl" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="StockSyncUrl" />
+                        <span asp-validation-for="StockSyncUrl"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ImageUrlEndpoint_OverrideForStore" asp-input="ImageUrlEndpoint" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ImageUrlEndpoint" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ImageUrlEndpoint" />
+                        <span asp-validation-for="ImageUrlEndpoint"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="BufferTime_OverrideForStore" asp-input="BufferTime" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="BufferTime" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="BufferTime" />
+                        <span asp-validation-for="BufferTime"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ManualSyncFrom_OverrideForStore" asp-input="ManualSyncFrom" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ManualSyncFrom" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ManualSyncFrom" />
+                        <span asp-validation-for="ManualSyncFrom"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="SyncTime_OverrideForStore" asp-input="SyncTime" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="SyncTime" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="SyncTime" />
+                        <span asp-validation-for="SyncTime"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="RequestTimeOutInSeconds_OverrideForStore" asp-input="RequestTimeOutInSeconds" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="RequestTimeOutInSeconds" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="RequestTimeOutInSeconds" />
+                        <span asp-validation-for="RequestTimeOutInSeconds"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-9">
+                        <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,46 @@
+﻿@model IList<GiftCardHistoryModel>
+@{
+    Layout = "_ColumnsTwo";
+    //page class
+    Html.AppendPageCssClassParts("html-account-page");
+}
+@section left
+{
+    @await Component.InvokeAsync("CustomerNavigation", new { selectedTabId = CustomerNavigationEnum.CheckGiftCardBalance })
+}
+<div class="page account-page order-list-page">
+    <div class="page-title" style="text-align:center">
+        <h1>@T("Account.MyAccount") - @T("Plugins.Misc.ZimzoneAdditionalFeature.Account.GiftCards")</h1>
+    </div>
+    <div class="page-body">
+        @if (Model.Count > 0)
+        {
+            <div class="order-list">
+                @foreach (var giftCardardHistory in Model)
+                {
+                    <div class="section order-item">
+                        <div class="title">
+                            @*<strong>@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.Fields.GiftCardNumber"): @giftCardardHistory.Id</strong>*@
+                            <strong>@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.Fields.CouponCode"): @giftCardardHistory.Coupon</strong>
+                        </div>
+                        <ul class="info">
+                            @*<li>@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.Fields.CouponCode"): <span class="order-date">@giftCardardHistory.Coupon</span></li>*@
+                            <li>@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.Fields.TotalAmount"): <span class="order-total">@giftCardardHistory.TotalAmount</span></li>
+                            <li>@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.Fields.RemainingAmount"): <span class="order-total">@giftCardardHistory.RemainingAmount</span></li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-data">
+                @T("Plugins.Misc.ZimzoneAdditionalFeature.Account.NoGiftCards")
+            </div>
+        }
+    </div>
+</div>
+
+<script asp-location="Footer">
+    $(".page-title").prependTo(".master-column-wrapper");
+</script>

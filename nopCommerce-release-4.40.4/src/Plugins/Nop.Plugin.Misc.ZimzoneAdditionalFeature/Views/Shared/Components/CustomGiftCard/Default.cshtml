@@ -1,0 +1,17 @@
+﻿@model GiftCardAdditionalDataModel
+@{
+    var dataDictGiftCard = new ViewDataDictionary(ViewData);
+    dataDictGiftCard.TemplateInfo.HtmlFieldPrefix = $"giftcard_{Model.ProductId}";
+}
+<style>
+    .add-to-cart-qty-wrapper {
+        display: none;
+    }
+    .gallery{
+        display:block;
+    }
+</style>
+
+@await Html.PartialAsync("~/Plugins/Misc.ZimzoneAdditionalFeature/Views/Shared/Components/CustomGiftCard/_AdditionalGiftCardData.cshtml", Model, dataDictGiftCard)
+
+

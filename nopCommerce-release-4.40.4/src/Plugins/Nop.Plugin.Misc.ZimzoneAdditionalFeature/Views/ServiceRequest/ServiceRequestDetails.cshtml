@@ -1,0 +1,46 @@
+﻿@model ServiceRequestModel
+@{
+    Layout = "_ColumnsOne";
+}
+
+<div class="page order-details-page">
+    <div class="page-title">
+        <h1>@T("Plugins.Misc.ZimzoneAdditionalFeature.ServiceRequestInformation")</h1>
+        @if (Model.PaidByOrderItemId == 0 && Model.IsAgreed)
+        {
+            <a href="@Url.RouteUrl("Customer.ServiceRequestPayment", new { requestId = Model.Id })" target="_blank" class="button-2 print-order-button">@T("Plugins.Misc.ZimzoneAdditionalFeature.PayNow")</a>
+        }
+
+    </div>
+    <div class="page-body">
+        <div class="order-overview">
+            <div class="order-number">
+                <strong>@T("Plugins.Misc.ZimzoneAdditionalFeature.ServiceName"): @Model.ServiceName</strong>
+            </div>
+            <div class="order-number">
+                <strong>@T("Plugins.Misc.ZimzoneAdditionalFeature.RequestId"):#@Model.Id</strong>
+            </div>
+            <ul class="order-overview-content">
+                <li class="order-date">
+                    @T("Plugins.Misc.ZimzoneAdditionalFeature.CreatedOn"): <strong>@Model.CreatedOn.ToString("D")</strong>
+                </li>
+                <li class="order-status">
+                    @T("Plugins.Misc.ZimzoneAdditionalFeature.Status"): <strong>@Model.Status</strong>
+                </li>
+                @if (Model.IsAgreed)
+                {
+                    <li class="order-total">
+                        @T("Plugins.Misc.ZimzoneAdditionalFeature.AgreedAmount"): <strong>@Model.AgreedAmountInCustomerCurrency</strong>
+                    </li>
+                }
+
+            </ul>
+            <div class="request-details">
+                @Html.Raw(Model.Description)
+            </div>
+            <div class="request-address">
+                @Model.CustomerAddress
+            </div>
+        </div>
+    </div>
+</div>

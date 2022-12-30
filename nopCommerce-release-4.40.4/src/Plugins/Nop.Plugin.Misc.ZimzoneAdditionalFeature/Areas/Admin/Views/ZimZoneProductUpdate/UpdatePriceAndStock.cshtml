@@ -1,0 +1,140 @@
+﻿@model PriceUpdateErrorSearchModel
+@{
+    Layout = "_AdminLayout";
+    ViewBag.PageTitle = T("Plugins.Misc.ZimzoneAdditionalFeature.UpdatePriceAndStock.Button.Text").Text;
+    Html.SetActiveMenuItemSystemName("AdditionalFeature.UpdtatePriceAndStock");
+}
+<div class="content-header clearfix">
+    <div class="float-right">
+        <button type="button" name="importexcel" class="btn bg-olive" data-toggle="modal" data-target="#importexcel-window-for-vendor">
+            <i class="fa fa-upload"></i>
+            @T("Plugins.Misc.ZimzoneAdditionalFeature.UpdatePriceAndStock.Button.Text")
+        </button>
+        <button type="submit" id="clearall" name="clearall" class="btn btn-danger">
+            <i class="far fa-trash-alt"></i>
+            @T("Admin.System.Log.ClearLog")
+        </button>
+        <nop-action-confirmation asp-button-id="clearall" asp-action="ClearAll" />
+    </div>
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="cards-group">
+
+                @if (!string.IsNullOrEmpty(Model.LastUpdatedInformation))
+                {
+                    <div class="card card-default">
+                        <div class="card-body">
+                            @Html.Raw(Model.LastUpdatedInformation)
+                        </div>
+                    </div>
+                }
+                <div class="card card-default">
+                    <div class="card-body">
+                        @await Html.PartialAsync("Table", new DataTablesModel
+                   {
+                       Name = "product-update-error-grid",
+                       UrlRead = new DataUrl("ErrorProductList", "ZimZoneProductUpdate", null),
+                       SearchButtonId = "search-categories",
+                       Length = Model.PageSize,
+                       LengthMenu = Model.AvailablePageSizes,
+                       Filters = new List<FilterParameter>
+                       {
+                       },
+                       ColumnCollection = new List<ColumnProperty>
+                            {
+                                // new ColumnProperty(nameof(PriceUpdateErrorModel.Id))
+                                //{
+                                //    IsMasterCheckBox = true,
+                                //    Render = new RenderCheckBox("checkbox_categories"),
+                                //    ClassName =  NopColumnClassDefaults.CenterAll,
+                                //    Width = "50"
+                                //},
+                                new ColumnProperty(nameof(PriceUpdateErrorModel.Sku))
+                                {
+                                    Title = T("Plugins.Misc.ZimzoneAdditionalFeature.UpdtatePriceAndStock.Sku").Text,
+                                    Width = "100",
+                                    ClassName =  NopColumnClassDefaults.CenterAll
+                                },
+                                new ColumnProperty(nameof(PriceUpdateErrorModel.Price))
+                                {
+                                    Title = T("Plugins.Misc.ZimzoneAdditionalFeature.UpdtatePriceAndStock.Price").Text,
+                                    Width = "100",
+                                    ClassName = NopColumnClassDefaults.CenterAll
+                                },
+                                new ColumnProperty(nameof(PriceUpdateErrorModel.Stock))
+                                {
+                                    Title = T("Plugins.Misc.ZimzoneAdditionalFeature.UpdtatePriceAndStock.Stock").Text,
+                                    Width = "150",
+                                    ClassName =  NopColumnClassDefaults.CenterAll
+                                },
+                                new ColumnProperty(nameof(PriceUpdateErrorModel.ErrorMessage))
+                                {
+                                    Title = T("Plugins.Misc.ZimzoneAdditionalFeature.UpdtatePriceAndStock.ErrorMessage").Text,
+                                    Width = "100"
+                                }
+                            }
+                   })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="importexcel-window-for-vendor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="importexcel-window-title">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="importexcel-window-title">@T("Admin.Common.ImportFromExcel")</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form id="csv-file-product-stock-and-price-submit-form" asp-controller="ZimZoneProductUpdate" asp-action="ImportFromXlsx" method="post" enctype="multipart/form-data">
+                <div class="form-horizontal">
+                    <div class="modal-body">
+                        <ul class="common-list">
+                            <li>
+                                <em>@T("Plugins.Misc.ZimzoneAdditionalFeature.UpdatePriceAndStock.Warning")</em>
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <div class="label-wrapper">
+                                    <label class="control-label">
+                                        @T("Admin.Common.ExcelFile")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="file" id="importexcelfile" name="importexcelfile" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="stock-and-price-submit-button" class="btn btn-primary">
+                            @T("Admin.Common.ImportFromExcel")
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script asp-location="Footer">
+    $("#clearall-action-confirmation-submit-button").on('click',function (e) {
+        e.preventDefault();
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: "@Url.Action("ClearLog", "ZimZoneProductUpdate")",
+            success: function (response) {
+                window.location.reload();
+            },
+            error: function (error) {
+                alert(error.responseText);
+            },
+            complete: function (jqXHR, textStatus) {
+            }
+        });
+    });
+</script>

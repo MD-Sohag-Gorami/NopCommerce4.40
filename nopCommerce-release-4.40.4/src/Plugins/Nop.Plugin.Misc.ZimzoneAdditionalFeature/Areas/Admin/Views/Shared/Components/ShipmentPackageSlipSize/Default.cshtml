@@ -1,0 +1,23 @@
+﻿@model int
+
+
+<a asp-action="ShipmentItemPdf" asp-controller="OrderItemPdfDownload" asp-route-shipmentId="@Model" class="btn btn-info">
+    <i class="far fa-file-pdf"></i>
+    @T("Plugins.Misc.ZimzoneAdditionalFeature.ShipmentItemPdfDownload.DownloadButton")
+</a>
+<a asp-action="PdfPackagingSlip" asp-controller="ShipmentPackageSlip" asp-route-shipmentId="@Model" asp-route-pageSize="A5" class="btn btn-info">
+    <i class="far fa-file-pdf"></i>
+    @T("Plugins.Misc.ZimzoneAdditionalFeature.ShipmentPackageSlipSize.A5")
+</a>
+<a asp-action="PdfPackagingSlip" asp-controller="ShipmentPackageSlip" asp-route-shipmentId="@Model" asp-route-pageSize="A5Landscape" class="btn btn-info">
+    <i class="far fa-file-pdf"></i>
+    @T("Plugins.Misc.ZimzoneAdditionalFeature.ShipmentPackageSlipSize.A5Landscape")
+</a>
+<a asp-action="PdfPackagingSlip" asp-controller="ShipmentPackageSlip" asp-route-shipmentId="@Model" asp-route-pageSize="A6" class="btn btn-info">
+    <i class="far fa-file-pdf"></i>
+    @T("Plugins.Misc.ZimzoneAdditionalFeature.ShipmentPackageSlipSize.A6")
+</a>
+<a asp-action="PdfPackagingSlip" asp-controller="ShipmentPackageSlip" asp-route-shipmentId="@Model" asp-route-pageSize="A6Landscape" class="btn btn-info">
+    <i class="far fa-file-pdf"></i>
+    @T("Plugins.Misc.ZimzoneAdditionalFeature.ShipmentPackageSlipSize.A6Landscape")
+</a>

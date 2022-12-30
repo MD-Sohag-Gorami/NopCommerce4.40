@@ -1,0 +1,29 @@
+﻿@inject IHttpContextAccessor httpContextAccessor
+@{
+    Html.AddCssFileParts("~/Plugins/Misc.ZimzoneAdditionalFeature/Views/Contents/styles.css");
+    httpContextAccessor.HttpContext.Session.SetString("GiftCardList", "");   //Session["MyticketAdd"] = null;
+
+    var controllerName = Url.ActionContext.RouteData.Values["controller"].ToString();
+    var actionName = Url.ActionContext.RouteData.Values["action"].ToString();
+
+    var isWidgetsTicketMyAccountController = controllerName.Equals("CustomGiftCard", StringComparison.InvariantCultureIgnoreCase);
+    var isMyTicketPage = isWidgetsTicketMyAccountController && (actionName.Equals("List", StringComparison.InvariantCultureIgnoreCase));
+}
+
+@if (ViewBag.IsMobile != null)
+{
+    @if (isMyTicketPage)
+    {
+        <option selected="selected" value="@Url.RouteUrl("Customer.GiftCards")">@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.GiftCards")</option>
+    }
+    else
+    {
+        <option value="@Url.RouteUrl("Customer.GiftCards")">@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.GiftCards")</option>
+    }
+}
+else
+{
+    <li class="gift-box-nav @(isMyTicketPage ? "active" : "inactive")">
+        <a href="@Url.RouteUrl("Customer.GiftCards")" class="@(isMyTicketPage ? "active" : "inactive")">@T("Plugins.Misc.ZimzoneAdditionalFeature.Account.GiftCards")</a>
+    </li>
+}

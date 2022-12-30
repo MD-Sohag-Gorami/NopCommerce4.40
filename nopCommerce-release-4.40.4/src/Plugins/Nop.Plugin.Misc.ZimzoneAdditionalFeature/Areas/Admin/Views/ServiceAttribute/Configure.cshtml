@@ -1,0 +1,65 @@
+﻿@model ServiceAttributeConfigurationModel
+@{
+    Layout = "_AdminLayout";
+    Html.SetActiveMenuItemSystemName("Plugins.Misc.ZimzoneAdditionalFeature.ServiceAttribute.Configure");
+}
+
+<form asp-controller="ServiceAttribute" asp-action="Configure" method="post">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ServiceNameAttributeId" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-select asp-for="ServiceNameAttributeId" asp-items="Model.AvailableAttributes" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ServiceEmailAttributeId" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-select asp-for="ServiceEmailAttributeId" asp-items="Model.AvailableAttributes" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ServiceAddressAttributeId" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-select asp-for="ServiceAddressAttributeId" asp-items="Model.AvailableAttributes" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ServiceDescriptionAttributeId" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-select asp-for="ServiceDescriptionAttributeId" asp-items="Model.AvailableAttributes" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ServiceFileAttributeId" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-select asp-for="ServiceFileAttributeId" asp-items="Model.AvailableAttributes" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

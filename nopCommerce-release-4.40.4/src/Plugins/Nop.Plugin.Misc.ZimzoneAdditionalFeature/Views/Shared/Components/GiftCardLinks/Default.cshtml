@@ -1,0 +1,10 @@
+﻿@model GiftVoucherProductsModel
+
+@if (!string.IsNullOrEmpty(Model.ZimazonProduct?.SeName))
+{
+<li class="custom-mega-menu-item-voucher"><a href="/@Model.ZimazonProduct.SeName" title="@Model.ZimazonProduct?.ProductName"><span>@Model.ZimazonProduct?.ProductName</span></a></li>
+}
+@if (!string.IsNullOrEmpty(Model.ElectroSalesProduct?.SeName))
+{
+<li class="custom-mega-menu-item-voucher"><a href="/@Model.ElectroSalesProduct.SeName" title="@Model.ElectroSalesProduct?.ProductName"><span>@Model.ElectroSalesProduct?.ProductName</span></a></li>
+}

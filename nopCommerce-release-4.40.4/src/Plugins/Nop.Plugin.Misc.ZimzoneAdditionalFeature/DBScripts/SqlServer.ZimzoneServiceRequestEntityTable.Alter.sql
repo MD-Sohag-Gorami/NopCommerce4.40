@@ -1,0 +1,1 @@
+﻿ALTER TABLE [dbo].[NS_ZimzoneServiceRequestEntity] ADD CustomName nvarchar(MAX);

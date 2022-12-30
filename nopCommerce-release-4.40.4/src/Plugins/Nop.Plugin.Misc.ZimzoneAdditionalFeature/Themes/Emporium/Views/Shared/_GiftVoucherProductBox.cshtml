@@ -1,0 +1,65 @@
+﻿@model ProductOverviewModel
+
+@using Nop.Core
+@using Nop.Core.Domain.Catalog
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Services.Configuration
+
+@inject IStoreContext storeContext
+@inject IWorkContext workContext
+@inject ISettingService settingService
+@inject CatalogSettings catalogSettings
+@inject IViewComponentSelector viewComponentSelector
+
+@{
+    //prepare "Add to cart" AJAX link
+    var storeId = (await storeContext.GetCurrentStoreAsync()).Id;
+}
+
+<script asp-location="Footer">
+    $(function () {
+        $('.product-selectors').css('display', 'none');
+    });
+</script>
+
+<div class="gift-voucher-product-item" data-productid="@Model.Id">
+    <div class="picture">
+        <a href="@Url.RouteUrl("Product", new { SeName = Model.SeName })" title="@Model.DefaultPictureModel.Title">
+            @if (viewComponentSelector.SelectComponent("LazyLoadImage") != null)
+            {
+                @await Component.InvokeAsync("LazyLoadImage", new (string Key, string Value)[]
+                {
+                    ("src", Model.DefaultPictureModel.ImageUrl),
+                    ("alt", Model.DefaultPictureModel.AlternateText),
+                    ("title", Model.DefaultPictureModel.Title),
+                    ("class", "picture-img")
+                })
+            }
+            else
+            {
+                <img class="picture-img" src="@Model.DefaultPictureModel.ImageUrl"
+                     alt="@Model.DefaultPictureModel.AlternateText" title="@Model.DefaultPictureModel.Title" />
+            }
+        </a>
+        <div class="btn-wrapper-gift-voucher">
+
+        </div>
+    </div>
+    <div class="details">
+        <h2 class="product-title">
+            <a href="@Url.RouteUrl("Product", new {SeName = Model.SeName})">@Model.Name</a>
+        </h2>
+        @if (catalogSettings.ShowSkuOnCatalogPages && !string.IsNullOrEmpty(Model.Sku))
+        {
+            <div class="sku">
+                @Model.Sku
+            </div>
+        }
+
+        <div class="description">
+            @Html.Raw(Model.ShortDescription)
+        </div>
+
+    </div>
+</div>

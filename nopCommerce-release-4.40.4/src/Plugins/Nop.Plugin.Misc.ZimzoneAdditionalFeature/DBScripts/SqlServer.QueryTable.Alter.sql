@@ -1,0 +1,2 @@
+﻿ALTER TABLE [dbo].[NS_Question]
+ADD CreatedOnUtc datetime2(7) NOT NULL DEFAULT '2022-09-12 09:07:21.0000000' WITH VALUES;
